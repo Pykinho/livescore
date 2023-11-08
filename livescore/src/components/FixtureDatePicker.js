@@ -3,6 +3,8 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
+import FORWARD from "../assets/images/forward.png";
+import BACKWARD from "../assets/images/backward.png";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,12 +22,29 @@ function FixtureDatePicker({}) {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleDecrement = () => {
+    const newDate = new Date(matchDate);
+    newDate.setDate(matchDate.getDate() - 1);
+    setMatchDate(newDate);
+  };
+  const handleIncrement = () => {
+    const newDate = new Date(matchDate);
+    newDate.setDate(matchDate.getDate() + 1);
+    setMatchDate(newDate);
+  };
+
   return (
     <div
       align="center"
       data-theme="synthwave"
       className="flex content-center justify-center w-full"
     >
+      <div>
+        <button onClick={handleDecrement} className="mt-2 mr-40 btn btn-ghost">
+          <img src={BACKWARD} alt={"BACKWARD"}></img>
+        </button>
+      </div>
+
       <DatePicker
         selected={matchDate}
         onChange={(date) => setMatchDate(date)}
@@ -51,6 +70,16 @@ function FixtureDatePicker({}) {
               day: "numeric",
             })}
       </button>
+      <div>
+        <div>
+          <button
+            onClick={handleIncrement}
+            className="mt-2 ml-40 btn btn-ghost"
+          >
+            <img src={FORWARD} alt={"FORWARD"}></img>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
