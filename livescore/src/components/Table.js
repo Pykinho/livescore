@@ -1,55 +1,39 @@
-import { Link } from "react-router-dom";
+import Fixture from "./Fixture";
+import FixtureDatePicker from "./FixtureDatePicker";
 
 function Table({ data }) {
+  let prevLeagueId = null;
+
+  const activeFixtures = data.response;
+  activeFixtures.sort((a, b) => a.league.id - b.league.id);
+
   return (
-    <div className="bg-gray-400 grid grid-cols-1 divide-y text-black">
-      {data.map((fixture) => (
-        <Link to={`/fixture/${fixture.fixture.id}`} key={fixture.fixture.id}>
-          <div className="bg-white py-2">
-            <div align="center">
-              <img
-                src={fixture.league.logo}
-                width={25}
-                alt={fixture.league.name}
-              />
-              {fixture.league.name}
-            </div>
-
-            <div className="text-center">{fixture.fixture.status.long}</div>
-
-            <div className="w-full flex p-1 text-center">
-              <div className="w-[10%]" align="center">
+    <div className="grid grid-cols-1 divide-y divide-indigo-900  mt-2 rounded-2xl">
+      <FixtureDatePicker />
+      {activeFixtures.map((fixture) => {
+        if (prevLeagueId !== fixture.league.id) {
+          prevLeagueId = fixture.league.id;
+          return (
+            <div
+              className=" grid grid-cols-1 divide-y divide-indigo-900 "
+              data-theme="synthwave"
+            >
+              <div align="center" className="flex my-4 mx-4 text-lg">
                 <img
-                  src={fixture.teams.home.logo}
-                  width={30}
-                  alt={fixture.teams.home.name}
+                  src={fixture.league.logo}
+                  width={25}
+                  alt={fixture.league.name}
                 />
+                <div className="mx-4"> {fixture.league.name}</div>
               </div>
-              <div className="w-[32%]" align="text-right">
-                {fixture.teams.home.name}
-              </div>
-
-              <div className="w-[16%]" align="text-center">
-                {fixture.goals.home} : {fixture.goals.away}
-              </div>
-
-              <div className="w-[32%]" align="text-left">
-                {fixture.teams.away.name}
-              </div>
-              <div className="w-[10%]" align="center">
-                <img
-                  src={fixture.teams.away.logo}
-                  width={30}
-                  alt={fixture.teams.away.name}
-                />
-              </div>
+              <Fixture fixture={fixture} />
             </div>
-            <div className="text-center text-green-600">
-              {fixture.fixture.status.elapsed}'
-            </div>
-          </div>
-        </Link>
-      ))}
+          );
+        } else {
+          prevLeagueId = fixture.league.id;
+          return <Fixture fixture={fixture} />;
+        }
+      })}
     </div>
   );
 }
