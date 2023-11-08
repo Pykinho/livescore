@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import BALLIMG from "../assets/images/ball.png";
 import YELLOWIMG from "../assets/images/yellow.png";
 import REDIMG from "../assets/images/red.png";
+import GoalEvents from "./GoalEvents";
 
 function FixtureDetails({ data }) {
   const params = useParams();
@@ -12,6 +13,18 @@ function FixtureDetails({ data }) {
   });
 
   const fixture = results[0];
+  const homeEvents = fixture.events.filter((event) => {
+    return event.team.id === fixture.teams.home.id;
+  });
+  const awayEvents = fixture.events.filter((event) => {
+    return event.team.id === fixture.teams.away.id;
+  });
+  const homeGoals = homeEvents.filter((event) => {
+    return event.type === "Goal";
+  });
+  const awayGoals = awayEvents.filter((event) => {
+    return event.type === "Goal";
+  });
 
   const eventIcon = (event) => {
     if (event.type === "Goal") {
@@ -41,52 +54,88 @@ function FixtureDetails({ data }) {
 
   return (
     <div className="h-screen">
-      <div className="bg-white py-2">
-        <div align="center">
-          <img src={fixture.league.logo} width={25} alt={fixture.league.name} />
-          {fixture.league.name}
-        </div>
-
-        <div className="text-center">{fixture.fixture.status.long}</div>
-
-        <div className="w-full flex p-1 text-center">
-          <div className="w-[10%]" align="center">
+      <div className=" grid grid-cols-1 divide-y divide-indigo-900  bg-base-100 py-2 mt-2 rounded-2xl">
+        <div className="my-3">
+          <div align="center">
             <img
-              src={fixture.teams.home.logo}
-              width={30}
-              alt={fixture.teams.home.name}
+              src={fixture.league.logo}
+              width={25}
+              alt={fixture.league.name}
             />
-          </div>
-          <div className="w-[32%]" align="text-right">
-            {fixture.teams.home.name}
-          </div>
-
-          <div className="w-[16%]" align="text-center">
-            {fixture.goals.home} : {fixture.goals.away}
-          </div>
-
-          <div className="w-[32%]" align="text-left">
-            {fixture.teams.away.name}
-          </div>
-          <div className="w-[10%]" align="center">
-            <img
-              src={fixture.teams.away.logo}
-              width={30}
-              alt={fixture.teams.away.name}
-            />
+            {fixture.league.name}
           </div>
         </div>
-        <div className="text-center text-green-600">
-          {fixture.fixture.status.elapsed}'
+        <div className="my-2">
+          <div className="w-full flex p-1 text-center">
+            <div className="w-[32%] mt-2" align="text-right">
+              {fixture.teams.home.name}
+            </div>
+            <div className="w-[10%] mt-2" align="center">
+              <img
+                src={fixture.teams.home.logo}
+                width={30}
+                alt={fixture.teams.home.name}
+              />
+            </div>
+
+            <div className="w-[16%]" align="text-center">
+              <div>
+                {fixture.goals.home} : {fixture.goals.away}
+              </div>
+              <div className="text-green-600">
+                {fixture.fixture.status.elapsed}'
+              </div>
+            </div>
+
+            <div className="w-[10%] mt-2" align="center">
+              <img
+                src={fixture.teams.away.logo}
+                width={30}
+                alt={fixture.teams.away.name}
+              />
+            </div>
+            <div className="w-[32%] mt-2" align="text-left">
+              {fixture.teams.away.name}
+            </div>
+          </div>
+          {homeGoals || awayGoals ? (
+            <div align="center">
+              <img src={BALLIMG} width={15} alt={"GOAL"} className="mt-6"></img>
+            </div>
+          ) : null}
+          <div className="w-full flex content-center justify-center ">
+            <GoalEvents data={homeGoals} />
+
+            <GoalEvents data={awayGoals} />
+          </div>
+        </div>
+        <div className="w-full flex content-center justify-between p-1 text-center text-xs">
+          <div className="p-2 bg-base-100">
+            {" "}
+            {new Date(fixture.fixture.date).toLocaleDateString("en-GB", {
+              timeZone: "UTC",
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+            })}
+          </div>
+          <div className="p-2 bg-base-100"> {fixture.fixture.venue.name}</div>
+          <div className="p-2 bg-base-100"> {fixture.league.country}</div>
+          <div className="p-2 bg-base-100"> {fixture.fixture.referee}</div>
+          <div className="p-2 bg-base-100 rounded-b-2xl">
+            Season {fixture.league.season}
+          </div>
         </div>
       </div>
 
-      <div align="center" className="grid grid-cols-1 divide-y">
-        <h1 className="bg-gray-700 p-1 text-gray-300 text-xl"> Events</h1>
-
+      <div
+        align="center"
+        className="grid grid-cols-1 divide-y divide-indigo-900  divide-y"
+      >
+        <h1 className="bg-accent p-1 text-base-200 text-xl"> Events</h1>
         {fixture.events
           ? fixture.events.map((event) => (
-              <div className="p-5" key={event.team.id}>
+              <div className="p-5 bg-base-100" key={event.team.id}>
                 {eventIcon(event)}
                 {event.time.elapsed}' {event.player.name}{" "}
                 <small>({event.team.name})</small>
@@ -94,42 +143,37 @@ function FixtureDetails({ data }) {
             ))
           : null}
       </div>
-      <div align="center" className="grid grid-cols-1 divide-y">
-        <h1 className="bg-gray-700 p-1 text-gray-300 text-xl">Score</h1>
-        <div className="p-2">
+      <div
+        align="center"
+        className="grid grid-cols-1 divide-y divide-indigo-900  divide-y"
+      >
+        <h1 className="bg-accent p-1 text-base-200 text-xl">Score</h1>
+        <div className="p-2 bg-base-100">
           First Half <br />
           {fixture.score.halftime.home} : {fixture.score.halftime.away}
         </div>
 
         {fixture.score.fulltime.home ? (
-          <div className="p-2">
+          <div className="p-2 bg-base-100">
             Full Time <br />
             {fixture.score.fulltime.home} : {fixture.score.fulltime.away}
           </div>
         ) : null}
 
         {fixture.score.extratime.home ? (
-          <div className="p-2">
+          <div className="p-2 bg-base-100">
             Extra Time <br />
             {fixture.score.extratime.home} : {fixture.score.extratime.away}
           </div>
         ) : null}
 
         {fixture.score.penalty.home ? (
-          <div className="p-2">
+          <div className="p-2 bg-base-100">
             Penalties
             <br />
             {fixture.score.penalty.home} : {fixture.score.penalty.away}
           </div>
         ) : null}
-      </div>
-      <div align="center" className="grid grid-cols-1 divide-y">
-        <h1 className="bg-gray-700 p-1 text-gray-300 text-xl">Match Details</h1>
-
-        <div className="p-2"> {fixture.fixture.venue.name}</div>
-        <div className="p-2"> {fixture.league.country}</div>
-        <div className="p-2"> {fixture.league.round}</div>
-        <div className="p-2"> {fixture.league.season}</div>
       </div>
     </div>
   );

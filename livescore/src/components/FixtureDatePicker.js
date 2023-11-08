@@ -9,9 +9,6 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-// CSS Modules, react-datepicker-cssmodules.css
-// import 'react-datepicker/dist/react-datepicker-cssmodules.css';
-
 function FixtureDatePicker({}) {
   const [matchDate, setMatchDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -37,7 +34,7 @@ function FixtureDatePicker({}) {
     <div
       align="center"
       data-theme="synthwave"
-      className="flex content-center justify-center w-full"
+      className="flex content-center justify-center w-full rounded-t-2xl"
     >
       <div>
         <button onClick={handleDecrement} className="mt-2 mr-40 btn btn-ghost">

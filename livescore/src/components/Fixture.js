@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 
 function Fixture({ fixture }) {
-  let prevLeagueId = null;
   return (
     <Link to={`/fixture/${fixture.fixture.id}`} key={fixture.fixture.id}>
       <div className=" py-2" data-theme="synthwave">
-        <div className="w-full flex p-1">
+        <div className="w-full flex content-center justify-center p-1">
           <div className="w-[32%] text-right text-sm mr-2">
             {fixture.teams.home.name}
           </div>
