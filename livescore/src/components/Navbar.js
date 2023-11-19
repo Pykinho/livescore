@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function NavBar({ title }) {
   return (
     <div
-      className="navbar-center bg-base-100 h-20 flex items-center sticky top-0 w-full"
+      className="navbar-center bg-base-100 h-20 flex items-center sticky top-0 w-full mb-2"
       data-theme="synthwave"
     >
       <a

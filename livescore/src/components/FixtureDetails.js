@@ -3,16 +3,25 @@ import BALLIMG from "../assets/images/ball.png";
 import YELLOWIMG from "../assets/images/yellow.png";
 import REDIMG from "../assets/images/red.png";
 import GoalEvents from "./GoalEvents";
+import { fixtureDetails } from "../lib/dummy-data";
+import { fetchFixtureDetails } from "../lib/fetch-data";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function FixtureDetails({ data }) {
   const params = useParams();
 
-  const matchID = params.matchID;
-  const results = data.response.filter((match) => {
-    return match.fixture.id === Number(matchID);
-  });
+  const [fixture, setFixture] = useState(fixtureDetails.response[0]);
+  // const fetchData = async () => {
+  //   const result = await fetchFixtureDetails(params.matchID);
+  //   setFixture(result.response[0]);
+  // };
 
-  const fixture = results[0];
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  console.log(fixture);
   const homeEvents = fixture.events.filter((event) => {
     return event.team.id === fixture.teams.home.id;
   });
@@ -53,7 +62,8 @@ function FixtureDetails({ data }) {
   };
 
   return (
-    <div className="h-screen">
+    // <div className=""></div>
+    <div className="h-screen md:w-[600px] lg:w-[600px]">
       <div className=" grid grid-cols-1 divide-y divide-indigo-900  bg-base-100 py-2 mt-2 rounded-2xl">
         <div className="my-3">
           <div align="center">

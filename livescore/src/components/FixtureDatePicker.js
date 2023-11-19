@@ -9,8 +9,8 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-function FixtureDatePicker({}) {
-  const [matchDate, setMatchDate] = useState(new Date());
+function FixtureDatePicker({ matchDate, setMatchDate }) {
+  // const [matchDate, setMatchDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -50,7 +50,7 @@ function FixtureDatePicker({}) {
         open={open}
         onClickOutside={handleClose}
         showPopperArrow={false}
-        popperClassName="ng-primary"
+        calendarClassName="bg-base-200"
         popperPlacement="bottom"
         align="center"
       />

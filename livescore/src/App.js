@@ -1,29 +1,18 @@
 import "./App.css";
-import { useEffect, useState } from "react";
-import { fetchFixtures } from "./lib/fetch-data";
-import { data } from "./lib/dummy-data";
+import { useState } from "react";
+
 import Table from "./components/Table";
 import NavBar from "./components/Navbar.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import FixtureDetails from "./components/FixtureDetails";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import FixtureDatePicker from "./components/FixtureDatePicker";
+import LeagueDetails from "./components/LeagueDetails";
+import { plData } from "./lib/dummy-data";
 
 function App() {
-  const [fixtures, setFixtures] = useState(data);
+  const [fixtures, setFixtures] = useState(plData);
 
-  // const fetchData = async () => {
-  //   const result = await fetchFixtures();
-  //   setFixtures(result);
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const activeFixtures = fixtures.response;
-  // activeFixtures.sort((a, b) => a.league.id - b.league.id);
   const refresh = () => window.location.reload(true);
 
   return (
@@ -36,7 +25,7 @@ function App() {
         Refresh
       </button>
 
-      <div className="w-full md:w-[600px] lg:w-[600px] m-auto">
+      <div className="w-full m-auto" align="center">
         {fixtures ? (
           <BrowserRouter>
             <Routes>
@@ -44,6 +33,11 @@ function App() {
               <Route
                 path="/fixture/:matchID"
                 element={<FixtureDetails data={fixtures} />}
+              ></Route>
+
+              <Route
+                path="/league/:leagueID/:season"
+                element={<LeagueDetails />}
               ></Route>
             </Routes>
           </BrowserRouter>
